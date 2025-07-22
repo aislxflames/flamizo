@@ -1,184 +1,171 @@
 <!DOCTYPE html>
 <html>
 
-	<%- include('../includes/head') %>
-	
-	<body class="hold-transition skin-blue sidebar-mini">
+<%- include('../includes/head') %>
 
-		<div class="wrapper">
+<body class="bg-black/70 backdrop-blur-md text-white min-h-screen"
+    style="background-image: url('/dist/img/background.jpg'); background-size: cover; background-position: center;">
 
-			<!-- The header is the topbar -->
-			<%- include('../includes/header') %>
+    <div class="flex">
 
-			<!-- The sidebar includes the menu -->
-			<%- include('../includes/sidebar') %>
+        <!-- Sidebar -->
+        <%- include('../includes/sidebar') %>
 
-			<!-- Content Wrapper. Contains page content -->
-			<div class="content-wrapper">
+        <!-- Content Wrapper -->
+        <div class="w-full">
+            <%- include('../includes/header') %>
 
-				<!-- Content Header (Page header) -->
-				<section class="content-header">
-					<h3> Greeting </h3>
-					<ol class="breadcrumb">
-                        <li><a href="/"><i class="fa fa-home"></i>Selector</a></li>
-                        <li><a href="<%=`/manage/${guild.id}/`%>"><%=guild.name%></a></li>
-                        <li class="active">Greeting</li>
-					</ol>
-				</section>
+            <!-- Content Header -->
+            <section class="px-6 pt-6">
+                <h3 class="text-2xl font-semibold text-red-400 mb-2">Greeting</h3>
+                <ol class="text-sm text-gray-300 flex gap-2 items-center">
+                    <li><a href="/" class="text-red-400 hover:underline"><i class="fa fa-home mr-1"></i>Selector</a></li>
+                    <li>›</li>
+                    <li><a href="<%=`/manage/${guild.id}/`%>" class="text-red-400 hover:underline"><%=guild.name%></a></li>
+                    <li>›</li>
+                    <li class="text-white">Greeting</li>
+                </ol>
+            </section>
 
-                <!-- Content -->
-				<section class="content">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <!-- WELCOME CONFIGURATION -->
-                            <div class="box box-success">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Welcome Embed</h3>
-                                </div>
-                                <form role="form" action="/manage/<%= guild.id %>/greeting" method="POST">
-                                    <div class="box-body">
-                                        <div class="form-group">
-                                            <label>Content</label>
-                                            <% if(guild.welcome.embed.description || guild.welcome.content) {%>
-                                                <textarea rows="3" name="content" class="form-control"><%- guild.welcome.content?.replaceAll(/\\n/g, '&#10;') %></textarea>
-                                            <% } else { %>
-                                                <textarea rows="3" name="content" class="form-control" placeholder="<%= 'Welcome to the server {member:name} 🎉' %>"></textarea>
-                                            <% } %>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Description</label>
-                                            <textarea rows="3" name="description" class="form-control"><%- guild.welcome.embed.description?.replaceAll(/\\n/g, '&#10;') %></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Footer</label>
-                                            <input type="text" name="footer" class="form-control" value="<%= guild.welcome.embed.footer %>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Hex Color</label>
-                                            <input type="text" name="hexcolor" class="form-control" value="<%= guild.welcome.embed.color %>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Image URL</label>
-                                            <input type="text" name="image" class="form-control" value="<%= guild.welcome.embed.image %>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Channel</label>
-                                            <select class="form-control" name="channel">
-                                                <% if(bot.channels.cache.has(guild.welcome.channel)){ %>
-                                                    <option selected="selected">#<%= bot.channels.cache.get(guild.welcome.channel).name %></option>
-                                                    <% guild.channels.cache.filter((ch) => ch.id !== guild.welcome.channel && ch.type === 0).forEach((ch) => { %>
-                                                        <option>#<%= ch.name %></option>
-                                                    <% }); } else { %>
-                                                    <option disabled selected value> -- select an option -- </option>
-                                                    <% guild.channels.cache.filter((ch) => ch.id !== guild.channels.cache.first().id && ch.type === 0).forEach((ch) => { %>
-                                                        <option>#<%= ch.name %></option>
-                                                    <% }); %>
-                                                <% } %>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <% if(guild.welcome.embed.thumbnail) { %>
-                                                        <input type="checkbox" name="thumbnail" checked>Thumbnail
-                                                    <% } else { %>
-                                                        <input type="checkbox" name="thumbnail">Thumbnail
-                                                    <% } %>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="box-footer">
-                                        <% if(guild.welcome.enabled){ %>
-                                            <button type="submit" name="welcomeDisable" class="btn btn-danger">Disable Messages</button>
-                                            <button type="submit" name="welcomeUpdate" class="btn btn-primary pull-right">Update</button>
-                                        <% } else { %>
-                                            <button type="submit" name="welcomeEnable" class="btn btn-success">Enable Message</button>
-                                        <% } %>
-                                    </div>
-                                </form>
+            <!-- Content -->
+            <section class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Welcome Box -->
+                    <div class="bg-black/60 border border-red-500 rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-red-400 mb-4">Welcome Embed</h3>
+                        <form action="/manage/<%= guild.id %>/greeting" method="POST" class="space-y-4">
+                            <div>
+                                <label class="block mb-1">Content</label>
+                                <textarea name="content" rows="3"
+                                    class="w-full p-2 rounded bg-black/50 text-white border border-gray-700 focus:outline-none focus:ring focus:border-red-500 resize-none"><%- guild.welcome.content?.replaceAll(/\\n/g, '&#10;') %></textarea>
                             </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <!-- FAREWELL CONFIGURATION -->
-                            <div class="box box-danger">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Farewell Configuration</h3>
-                                </div>
-                                <form role="form" action="/manage/<%= guild.id %>/greeting" method="POST">
-                                    <div class="box-body">
-                                        <div class="form-group">
-                                            <label>Content</label>
-                                            <% if(guild.farewell.embed.description || guild.farewell.content) {%>
-                                                <textarea rows="3" name="content" class="form-control"><%- guild.farewell.content?.replaceAll(/\\n/g, '&#10;') %></textarea>
-                                            <% } else { %>
-                                                <textarea rows="3" name="content" class="form-control" placeholder="<%= '{member:tag} has left the server 👋' %>"></textarea>
-                                            <% } %>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Description</label>
-                                            <textarea rows="3" name="description" class="form-control"><%- guild.farewell.embed.description?.replaceAll(/\\n/g, '&#10;') %></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Footer</label>
-                                            <input type="text" name="footer" class="form-control" value="<%= guild.farewell.embed.footer %>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Hex Color</label>
-                                            <input type="text" name="hexcolor" class="form-control" value="<%= guild.farewell.embed.color %>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Image URL</label>
-                                            <input type="text" name="image" class="form-control" value="<%= guild.farewell.embed.image %>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Channel</label>
-                                            <select class="form-control" name="channel">
-                                                <% if(bot.channels.cache.has(guild.farewell.channel)){ %>
-                                                    <option selected="selected">#<%= bot.channels.cache.get(guild.farewell.channel).name %></option>
-                                                    <% guild.channels.cache.filter((ch) => ch.id !== guild.farewell.channel && ch.type === 0).forEach((ch) => { %>
-                                                        <option>#<%= ch.name %></option>
-                                                    <% }); } else { %>
-                                                        <option disabled selected value> -- select an option -- </option>
-                                                    <% guild.channels.cache.filter((ch) => ch.id !== guild.channels.cache.first().id && ch.type === 0).forEach((ch) => { %>
-                                                        <option>#<%= ch.name %></option>
-                                                    <% }); %>
-                                                <% } %>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <% if(guild.farewell.embed.thumbnail) { %>
-                                                        <input type="checkbox" name="thumbnail" checked>Thumbnail
-                                                    <% } else { %>
-                                                        <input type="checkbox" name="thumbnail">Thumbnail
-                                                    <% } %>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="box-footer">
-                                        <% if(guild.farewell.enabled){ %>
-                                            <button type="submit" name="farewellDisable" class="btn btn-danger">Disable Messages</button>
-                                            <button type="submit" name="farewellUpdate" class="btn btn-primary pull-right">Update</button>
-                                        <% } else { %>
-                                            <button type="submit" name="farewellEnable" class="btn btn-success">Enable Message</button>
-                                        <% } %>
-                                    </div>
-                                </form>
+                            <div>
+                                <label class="block mb-1">Description</label>
+                                <textarea name="description" rows="3"
+                                    class="w-full p-2 rounded bg-black/50 text-white border border-gray-700 focus:outline-none resize-none"><%- guild.welcome.embed.description?.replaceAll(/\\n/g, '&#10;') %></textarea>
                             </div>
+                            <div>
+                                <label class="block mb-1">Footer</label>
+                                <input type="text" name="footer" class="w-full p-2 rounded bg-black/50 border border-gray-700"
+                                    value="<%= guild.welcome.embed.footer %>">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Hex Color</label>
+                                <input type="text" name="hexcolor" class="w-full p-2 rounded bg-black/50 border border-gray-700"
+                                    value="<%= guild.welcome.embed.color %>">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Image URL</label>
+                                <input type="text" name="image" class="w-full p-2 rounded bg-black/50 border border-gray-700"
+                                    value="<%= guild.welcome.embed.image %>">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Channel</label>
+                                <select name="channel"
+                                    class="w-full p-2 rounded bg-black/50 border border-gray-700 text-white">
+                                    <% if(bot.channels.cache.has(guild.welcome.channel)){ %>
+                                        <option selected>#<%= bot.channels.cache.get(guild.welcome.channel).name %></option>
+                                        <% guild.channels.cache.filter((ch) => ch.id !== guild.welcome.channel && ch.type === 0).forEach((ch) => { %>
+                                            <option>#<%= ch.name %></option>
+                                        <% }); } else { %>
+                                        <option disabled selected> -- select an option -- </option>
+                                        <% guild.channels.cache.filter((ch) => ch.id !== guild.channels.cache.first().id && ch.type === 0).forEach((ch) => { %>
+                                            <option>#<%= ch.name %></option>
+                                        <% }); %>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" name="thumbnail" class="accent-red-500" <% if(guild.welcome.embed.thumbnail) { %>checked<% } %>>
+                                <label>Thumbnail</label>
+                            </div>
+                            <div class="pt-4 flex justify-between">
+                                <% if(guild.welcome.enabled){ %>
+                                    <button type="submit" name="welcomeDisable"
+                                        class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">Disable
+                                        Messages</button>
+                                    <button type="submit" name="welcomeUpdate"
+                                        class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white">Update</button>
+                                <% } else { %>
+                                    <button type="submit" name="welcomeEnable"
+                                        class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white">Enable
+                                        Message</button>
+                                <% } %>
+                            </div>
+                        </form>
+                    </div>
 
-                        </div>
-                    <div>
-				</section>
-				
-			</div>
-            <!-- /.content-wrapper -->
+                    <!-- Farewell Box -->
+                    <div class="bg-black/60 border border-red-500 rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-red-400 mb-4">Farewell Configuration</h3>
+                        <form action="/manage/<%= guild.id %>/greeting" method="POST" class="space-y-4">
+                            <div>
+                                <label class="block mb-1">Content</label>
+                                <textarea name="content" rows="3"
+                                    class="w-full p-2 rounded bg-black/50 text-white border border-gray-700 resize-none"><%- guild.farewell.content?.replaceAll(/\\n/g, '&#10;') %></textarea>
+                            </div>
+                            <div>
+                                <label class="block mb-1">Description</label>
+                                <textarea name="description" rows="3"
+                                    class="w-full p-2 rounded bg-black/50 text-white border border-gray-700 resize-none"><%- guild.farewell.embed.description?.replaceAll(/\\n/g, '&#10;') %></textarea>
+                            </div>
+                            <div>
+                                <label class="block mb-1">Footer</label>
+                                <input type="text" name="footer" class="w-full p-2 rounded bg-black/50 border border-gray-700"
+                                    value="<%= guild.farewell.embed.footer %>">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Hex Color</label>
+                                <input type="text" name="hexcolor" class="w-full p-2 rounded bg-black/50 border border-gray-700"
+                                    value="<%= guild.farewell.embed.color %>">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Image URL</label>
+                                <input type="text" name="image" class="w-full p-2 rounded bg-black/50 border border-gray-700"
+                                    value="<%= guild.farewell.embed.image %>">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Channel</label>
+                                <select name="channel"
+                                    class="w-full p-2 rounded bg-black/50 border border-gray-700 text-white">
+                                    <% if(bot.channels.cache.has(guild.farewell.channel)){ %>
+                                        <option selected>#<%= bot.channels.cache.get(guild.farewell.channel).name %></option>
+                                        <% guild.channels.cache.filter((ch) => ch.id !== guild.farewell.channel && ch.type === 0).forEach((ch) => { %>
+                                            <option>#<%= ch.name %></option>
+                                        <% }); } else { %>
+                                            <option disabled selected> -- select an option -- </option>
+                                            <% guild.channels.cache.filter((ch) => ch.id !== guild.channels.cache.first().id && ch.type === 0).forEach((ch) => { %>
+                                                <option>#<%= ch.name %></option>
+                                            <% }); %>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" name="thumbnail" class="accent-red-500" <% if(guild.farewell.embed.thumbnail) { %>checked<% } %>>
+                                <label>Thumbnail</label>
+                            </div>
+                            <div class="pt-4 flex justify-between">
+                                <% if(guild.farewell.enabled){ %>
+                                    <button type="submit" name="farewellDisable"
+                                        class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">Disable
+                                        Messages</button>
+                                    <button type="submit" name="farewellUpdate"
+                                        class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white">Update</button>
+                                <% } else { %>
+                                    <button type="submit" name="farewellEnable"
+                                        class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white">Enable
+                                        Message</button>
+                                <% } %>
+                            </div>
+                        </form>
+                    </div>
 
-            <%- include('../includes/footer') %>
-		</div>
-		<!-- ./wrapper -->
-	</body>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</body>
+
 </html>

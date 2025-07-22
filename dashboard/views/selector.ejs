@@ -1,90 +1,72 @@
 <!DOCTYPE html>
 <html>
-  <%- include('includes/head') %>
+<%- include('includes/head') %>
 
-  <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
-      <!-- The header is the topbar -->
+  <body
+    style="background-image: url('/dist/img/background.jpg'); background-color: black; background-size: cover; background-position: center;"
+    class="text-white min-h-screen overflow-x-hidden">
+
+    <!-- Header -->
+
+    <div class="bg-black/10 backdrop-blur-2xl">
+      <!-- Sidebar -->
       <%- include('includes/header') %>
 
-      <!-- The sidebar includes the menu -->
-      <%- include('includes/sidebar') %>
+        <main class=" p-6 flex flex-col gap-4"> <!-- adjust ml-72 if your sidebar width is different -->
+          <header class="mb-6 flex flex-col items-center justify-center">
+            <nav class="text-base text-white mt-2 font-bold">
+              <a href="/" class="hover:underline"><i class="fa fa-home mr-1"></i> SERVERS</a>
+            </nav>
+            <h1 class="text-5xl font-extrabold">Select the server you want to manage</h1>
+            <!-- Search Form -->
+            <form action="/selector" method="get" class="mt-6">
+              <div class="flex items-center border border-white/10 rounded overflow-hidden">
+                <input type="text" name="q" placeholder="Search for servers..."
+                  class="bg-transparent text-white px-3 py-2 w-full focus:outline-none placeholder-white/50" />
+                <button type="submit" class="px-3 py-2 hover:bg-white/10">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </form>
 
-      <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <h1>Selector <small> Version 1.0.0-beta </small></h1>
-          <ol class="breadcrumb">
-            <li class="active">
-              <a href="/"><i class="fa fa-home"></i>Selector</a>
-            </li>
-          </ol>
-        </section>
+          </header>
 
-        <section class="content">
-          <div class="row">
+          <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <% if(user.displayedGuilds){ user.displayedGuilds.forEach(function(guild) { %>
-            <!-- Displays 4 servers by line -->
-            <div class="col-md-3">
-              <div class="box box-solid">
-                <div class="box-header with-border text-center">
-                  <i class="fas fa-crown"></i>
-                  <h3 class="box-title server-name"><%= guild.name %></h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                  <div class="text-center">
-                    <img
-                      src="<%= guild.iconURL %>"
-                      style="border-radius: 100%"
-                      width="100"
-                      height="100"
-                      class="img-fluid"
-                    />
-                  </div>
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
+              <div
+                class="bg-white/5 border border-white/10 backdrop-blur-md rounded-xl shadow-md overflow-hidden hover:scale-[1.02] transition">
+                <div class="p-4 flex flex-col items-center">
+                  <img src="<%= guild.iconURL %>" alt="Server Icon"
+                    class="w-24 h-24 rounded-full shadow-md mb-3 border border-white/10" />
+                  <h3 class="text-lg font-semibold text-center mb-2">
+                    <%= guild.name %>
+                  </h3>
                   <% if(guild.settingsUrl.includes('discordapp.com')) { %>
-                  <a href="<%= guild.settingsUrl %>"><button class="btn btn-block btn-primary">Invite</button></a>
-                  <% } else { %>
-                  <a href="<%= guild.settingsUrl %>"><button class="btn btn-block btn-success">Manage</button></a>
-                  <% } %>
+                    <a href="<%= guild.settingsUrl %>" class="w-full">
+                      <button class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">Invite</button>
+                    </a>
+                    <% } else { %>
+                      <a href="<%= guild.settingsUrl %>" class="w-full">
+                        <button
+                          class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition">Manage</button>
+                      </a>
+                      <% } %>
                 </div>
-                <!-- /.box-footer -->
               </div>
-              <!-- /.box -->
-            </div>
-            <!-- /.col -->
-            <% }); } else { %>
-            <div class="col-md-12">
-              <div class="box box-warning">
-                <div class="box-header with-border">
-                  <h3 class="box-title">No server found</h3>
-                  <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                      <i class="fa fa-minus"></i>
-                    </button>
+              <% }); } else { %>
+                <div class="col-span-full">
+                  <div class="bg-yellow-900/40 border border-yellow-500/30 p-6 rounded-xl text-center">
+                    <h3 class="text-xl font-semibold mb-2">No server found</h3>
+                    <p class="text-sm text-yellow-200">
+                      Make sure you are logged in with the correct account and try again.
+                    </p>
                   </div>
-                  <!-- /.box-tools -->
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                  No server to display. Make sure you are logged in with the right account and try again
-                </div>
-                <!-- /.box-body -->
-              </div>
-              <!-- /.box -->
-            </div>
-            <% } %>
-          </div>
-        </section>
-      </div>
-
-      <!-- Footer includes credits and version -->
-      <%- include('includes/footer') %>
+                <% } %>
+          </section>
+        </main>
     </div>
-    <!-- ./wrapper -->
+    <%- include('includes/footer') %>
   </body>
+
 </html>

@@ -1,36 +1,43 @@
-<header class="main-header">
+<header class="flex items-center justify-between px-6 bg-black/10 backdrop-blur-2xl h-20 ">
   <!-- Logo -->
-  <a href="/" class="logo">
+  <a href="/" class="flex justify-center items-center gap-3 text-4xl text-white font-bold">
     <!-- mini logo for sidebar mini 50x50 pixels -->
-    <span class="logo-mini"><b>FLz</b></span>
     <!-- logo for regular state and mobile devices -->
+     <span>
+      <img class="w-12 rounded-xl" src="/dist/img/logo.png" alt="">
+     </span>
     <span class="logo-lg"><b>Flamizo</b></span>
   </a>
 
   <!-- Header Navbar: style can be found in header.less -->
-  <nav class="navbar navbar-static-top">
+  <nav class="">
     <!-- Sidebar toggle button-->
     <a class="sidebar-toggle" data-toggle="push-menu" role="button">
       <span class="sr-only">Toggle navigation</span>
     </a>
     <!-- Navbar Right Menu -->
-    <div class="navbar-custom-menu">
-      <ul class="nav navbar-nav">
-        <!-- User Account: style can be found in dropdown.less -->
-        <li class="dropdown user user-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="<%= user.displayAvatar %>" class="user-image" alt="User Image" />
-            <span class="hidden-xs"><%= user.tag %></span>
+    <div class="flex gap-4">
+      <ul class="">
+
+        <li class="relative group flex items-center gap-4">
+          <a href="#" class="flex items-center space-x-2">
+            <img src="<%= user.displayAvatar %>" class="w-10 h-10 rounded-xl" alt="User Image" />
+            <span class="text-2xl text-white">
+              <%= user.tag %>
+            </span>
           </a>
-          <ul class="dropdown-menu">
-            <!-- Menu Footer-->
-            <li class="user-footer" style="min-width: auto !important">
-              <div>
-                <a href="/logout" class="btn btn-default btn-flat btn-block">Sign out</a>
-              </div>
+
+          <!-- Dropdown menu -->
+          <ul
+            class="absolute top-full left-0 mt-2 hidden group-hover:block bg-[#1a1a1a] text-white rounded-lg shadow-lg backdrop-blur-md border border-white/10 min-w-[8rem] z-50">
+            <li class="px-4 py-2 hover:bg-white/10 transition">
+              <a href="/logout" class="block text-sm">Sign out</a>
             </li>
           </ul>
         </li>
+
+
+
       </ul>
     </div>
   </nav>

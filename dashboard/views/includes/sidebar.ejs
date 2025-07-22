@@ -1,54 +1,50 @@
-<!-- Left side column. contains the logo and sidebar -->
-<aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-        <!-- Sidebar user panel -->
-        <div class="user-panel">
-            <div class="pull-left image">
-                <img src="<%= user.displayAvatar %>" class="img-circle" alt="User Image">
-            </div>
-            <div class="pull-left info">
-                <p><%= user.username %></p>
-            </div>
-        </div>
-        <!-- search form -->
-        <form action="/selector" method="get" class="sidebar-form">
-        <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Search for servers...">
-            <span class="input-group-btn">
-                <button type="submit" id="search-btn" class="btn btn-flat">
-                    <i class="fa fa-search"></i>
-                </button>
-            </span>
-        </div>
-        </form>
-        <!-- /.search form -->
-        <!-- sidebar menu: : style can be found in sidebar.less -->
-        <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">SERVERS MANAGEMENT</li>
-            <li class="treeview menu-open">
-                <li><a href="/selector"><i class="fa fa-home"></i> <span>Selector</span></a></li>
-            </li>
-        </ul>
-        <% if (locals.guild){ %>
-        <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">CONFIGURATION</li>
-            <li class="treeview menu-open">
-                <li><a href="/manage/<%= guild.id %>/basic"><i class="fa fa-gear"></i> <span>Basic</span></a></li>
-                <li><a href="/manage/<%= guild.id %>/greeting"><i class="fa fa-bullhorn"></i> <span>Greeting</span></a></li>
-            </li>
-        </ul>
-        <% } %>
-    </section>
-    <!-- /.sidebar -->
-</aside>
+<aside class="w-100 min-h-screen bg-black/40 backdrop-blur-md text-white p-4">
+  <!-- User Panel -->
+  <div class="flex items-center space-x-3 mb-6">
+    <img src="<%= user.displayAvatar %>" alt="User Image" class="w-12 h-12 rounded-full" />
+    <div>
+      <p class="text-lg font-semibold"><%= user.username %></p>
+    </div>
+  </div>
 
-<script>
-    $(document).ready(function() {
-        // get current URL path and assign 'active' class
-        let pathname = window.location.pathname;
-        $(`.sidebar-menu > li > a[href="${pathname}"]`).parent().addClass("active");
-        $(`.sidebar-menu > li > ul > li > a[href="${window.location.pathname}"]`).parent().addClass("active");
-        $(`.sidebar-menu > li > a[href="/${window.location.pathname.split("/")[1]}/"]`).parent().addClass("active");
-    });
-</script>
+  <!-- Search Form -->
+  <form action="/selector" method="get" class="mb-6">
+    <div class="flex items-center border border-white/10 rounded overflow-hidden">
+      <input type="text" name="q" placeholder="Search for servers..." class="bg-transparent text-white px-3 py-2 w-full focus:outline-none placeholder-white/50" />
+      <button type="submit" class="px-3 py-2 hover:bg-white/10">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </form>
+
+  <!-- Server Management Section -->
+  <div class="mb-6">
+    <h2 class="text-sm uppercase text-white/50 mb-2 tracking-wide">Servers Management</h2>
+    <ul class="space-y-2">
+      <li>
+        <a href="/selector" class="block px-3 py-2 rounded hover:bg-white/10 transition">
+          <i class="fa fa-home mr-2"></i> Selector
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Configuration Section -->
+  <% if (locals.guild) { %>
+  <div>
+    <h2 class="text-sm uppercase text-white/50 mb-2 tracking-wide">Configuration</h2>
+    <ul class="space-y-2">
+      <li>
+        <a href="/manage/<%= guild.id %>/basic" class="block px-3 py-2 rounded hover:bg-white/10 transition">
+          <i class="fa fa-gear mr-2"></i> Modules
+        </a>
+      </li>
+      <li>
+        <a href="/manage/<%= guild.id %>/greeting" class="block px-3 py-2 rounded hover:bg-white/10 transition">
+          <i class="fa fa-bullhorn mr-2"></i> Greeting
+        </a>
+      </li>
+    </ul>
+  </div>
+  <% } %>
+</aside>
